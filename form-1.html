@@ -46,11 +46,11 @@
             event.preventDefault()
             const { value : user } = this.state
 
-            if( user.trim() === '' ){
-                this.setState({ message : `Warning : There is empty space.`});
+            if( user === '' ){
+                this.setState({ message : `Warning : The field is empty.`});
                 return
             }
-            if(this.state.users.includes( user.trim() ) === false ){
+            if(this.state.users.includes( user ) === false ){
                 this.state.users.push(user);
                 this.setState({ users : this.state.users, value: '', message : `New user : ${user}.` })
                 return
