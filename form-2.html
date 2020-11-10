@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    const MAX = 100
+
+    class App extends React.Component{
+        render(){
+            return(
+                <Form/>
+            );
+        }
+    }
+
+    class Form extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {
+                number: '',
+                multiples : [],
+                message : ''
+            }
+
+            this.handleChange = this.handleChange.bind(this)
+            this.handleSubmit = this.handleSubmit.bind(this)
+        }
+
+        handleChange(event) {
+            const { value : number } = event.target
+
+            this.setState({ number : number, message : '', multiples : []})
+        }
+
+        handleSubmit(event) {
+            event.preventDefault()
+            const { number } = this.state
+
+            if( number === '' ){
+                this.setState({ message : `Warning : The field is empty.`})
+                return
+            }
+            if( parseInt(number) != number ){
+                this.setState({ message : `Warning : This is not an integer.`})
+                return
+            }
+            if( parseInt(number) > MAX ){
+                this.setState({ message : `Warning : This integer is larger than 100.`})
+                return
+            }
+
+            let multiple = number
+            this.state.multiples.push(multiple)
+
+            for (let i = 2;  i < MAX ; i++) {
+                multiple = i * number
+                if( multiple > MAX) break
+                this.state.multiples.push(multiple)
+            }
+
+            this.setState({ multiples : this.state.multiples })
+        }
+
+        render() {
+            const { number, multiples, message } = this.state
+
+            return (
+                <form onSubmit={this.handleSubmit}>
+                    <div class="form-goup p-3">
+                        <p class="alert alert-primary" role="alert">{message}</p>
+                        <div>
+                            <label> Enter an integer :
+                                <input class="form-control" type="text" name="value" value={number} onChange={this.handleChange} />
+                            </label>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Calcul" />
+                    </div>
+                    <div class="form-goup p-3" >
+                        List of multiples :
+                        <Multiples multiples={multiples} />
+                    </div>
+                </form>
+            )
+        }
+    }
+
+    class Multiples extends React.Component{
+        render() {
+            const { multiples } = this.props
+
+            return (
+                <ul>
+                    { multiples.map((num, i) => (<li key={i}>{num}</li>))}
+                </ul>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+    )
+    </script>
+</body>
+</html>
