@@ -47,11 +47,11 @@
             const { value : user } = this.state
 
             if( user === '' ){
-                this.setState({ message : `Warning : The field is empty.`});
+                this.setState({ message : `Warning : The field is empty.`})
                 return
             }
             if(this.state.users.includes( user ) === false ){
-                this.state.users.push(user);
+                this.state.users.push(user)
                 this.setState({ users : this.state.users, value: '', message : `New user : ${user}.` })
                 return
             }
@@ -60,34 +60,36 @@
 
         render() {
             const { users, value, message } = this.state
+
             return (
-            <form onSubmit={this.handleSubmit}>
-                <div class="form-goup p-3">
-                    <p class="alert alert-primary" role="alert">{message}</p>
-                    <div>
-                        <label> Username :
-                            <input class="form-control" type="text" name="value" value={value} onChange={this.handleChange} />
-                        </label>
+                <form onSubmit={this.handleSubmit}>
+                    <div class="form-goup p-3">
+                        <p class="alert alert-primary" role="alert">{message}</p>
+                        <div>
+                            <label> Username :
+                                <input class="form-control" type="text" name="value" value={value} onChange={this.handleChange} />
+                            </label>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="New user" />
                     </div>
-                    <input class="btn btn-primary" type="submit" value="New user" />
-                </div>
-                <div class="form-goup p-3" >
-                    Users :
-                    <Users users={users} />
-                </div>
-            </form>
+                    <div class="form-goup p-3" >
+                        Users :
+                        <Users users={users} />
+                    </div>
+                </form>
             )
         }
     }
 
     class Users extends React.Component{
         render() {
-            const { users } = this.props;
+            const { users } = this.props
+
             return (
                 <ul>
                     { users.map((user, i) => (<li key={i}>{user}</li>))}
                 </ul>
-            );
+            )
         }
     }
 
