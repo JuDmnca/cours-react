@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    class App extends React.Component{
+        render(){
+            return(
+                <Form/>
+            );
+        }
+    }
+
+    class Form extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {
+                value: '',
+                users : [],
+                message : ''
+            };
+
+            this.handleChange = this.handleChange.bind(this)
+            this.handleSubmit = this.handleSubmit.bind(this)
+        }
+
+        handleChange(event) {
+            const { value : user } = event.target
+
+            this.setState({ value: user.toUpperCase(), message : '' })
+        }
+
+        handleSubmit(event) {
+            event.preventDefault()
+            const { value : user } = this.state
+
+            if( user.trim() === '' ){
+                this.setState({ message : `Warning : There is empty space.`});
+                return
+            }
+            if(this.state.users.includes( user.trim() ) === false ){
+                this.state.users.push(user);
+                this.setState({ users : this.state.users, value: '', message : `New user : ${user}.` })
+                return
+            }
+            this.setState({ message : `Warning : ${user} already exists.`})
+        }
+
+        render() {
+            const { users, value, message } = this.state
+            return (
+            <form onSubmit={this.handleSubmit}>
+                <div class="form-goup p-3">
+                    <p class="alert alert-primary" role="alert">{message}</p>
+                    <div>
+                        <label> Username :
+                            <input class="form-control" type="text" name="value" value={value} onChange={this.handleChange} />
+                        </label>
+                    </div>
+                    <input class="btn btn-primary" type="submit" value="New user" />
+                </div>
+                <div class="form-goup p-3" >
+                    Users :
+                    <Users users={users} />
+                </div>
+            </form>
+            )
+        }
+    }
+
+    class Users extends React.Component{
+        render() {
+            const { users } = this.props;
+            return (
+                <ul>
+                    { users.map((user, i) => (<li key={i}>{user}</li>))}
+                </ul>
+            );
+        }
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+    )
+    </script>
+</body>
+</html>
