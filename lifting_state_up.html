@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    class App extends React.Component {
+        constructor(props) {
+            super(props)
+            this.state = {
+                decimal: '',
+                binary : '',
+                message : ''
+            }
+            this.handleChange = this.handleChange.bind(this)
+        }
+
+        handleChange(number, base) {
+            if( number != parseInt(number) && number!= ''){
+                this.setState({ message : "Warning : this is not an integer." })
+                return
+            }
+            if( base === 'binary' && number != parseInt(number) ){
+                this.setState({ message : `Warning : ${number} is not a binary value.` })
+                return
+            }
+            if(base === 'decimal')
+                this.setState({ decimal : number, binary : parseInt(number).toString(2), message : 'Converted to binary !' })
+
+            if(base === 'binary')
+                this.setState({ binary : number, decimal : parseInt(number, 2), message : 'Converted to decimal !' })
+        }
+
+        render() {
+            const { decimal, binary, message } = this.state
+
+            return (
+                <div className="container">
+                    <p className="alert alert-primary" role="alert">{message}</p>
+                    <BaseNumberInput base="decimal" number={decimal} onBaseChange={ (number, base) => this.handleChange(number, base)} />
+                    <BaseNumberInput base="binary" number={binary} onBaseChange={ (number, base) => this.handleChange(number, base)} />
+                </div>
+            )
+        }
+    }
+
+    class BaseNumberInput extends React.Component{
+        constructor(props) {
+            super(props)
+            this.handleChange = this.handleChange.bind(this)
+        }
+
+        handleChange(event) {
+            const { value, name } = event.target
+            this.props.onBaseChange(value, name)
+        }
+
+        render() {
+            const { number, base } = this.props
+
+            return (
+                <div className="container">
+                    <div className="form-goup p-3">
+                        <div>
+                            <label className="w-25">{base.toUpperCase()}
+                                <input type="text" name={base} value={number} onChange={this.handleChange} />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+    )
+    </script>
+</body>
+</html>
