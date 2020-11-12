@@ -61,8 +61,8 @@
             this.handleChange = this.handleChange.bind(this)
         }
 
-        handleChange(event) {
-            const { value, name } = event.target
+        handleChange(e) {
+            const { value, name } = e.target
             this.props.onBaseChange(value, name)
         }
 
