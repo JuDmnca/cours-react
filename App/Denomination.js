@@ -22,7 +22,7 @@ class Denomination extends Component {
         e.preventDefault()
         const { amount } = this.state
 
-        if (parseInt(amount) != amount) {
+        if (amount != parseInt(amount)) {
             this.setState({ message: `Warning ${amount} is not an integer.` })
             return
         }
