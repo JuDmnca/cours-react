@@ -27,10 +27,10 @@ class Denomination extends Component {
             return
         }
 
-        this.setState({ amount : '', results: this.calcul(amount) })
+        this.setState({ amount : '', results: this.calculTokens(amount) })
     }
 
-    calcul(amount) {
+    calculTokens(amount) {
         const results = [{'amount' : amount}]
 
         for (const token of this.props.denominations) {
