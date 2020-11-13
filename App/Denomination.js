@@ -36,7 +36,7 @@ class Denomination extends Component {
         for (const token of this.props.denominations) {
             let nbr = Math.floor(amount / token)
             if (nbr >= 1) {
-                amount = amount - (nbr * token)
+                amount -= (nbr * token)
                 results.push({ 'token': token, 'count': nbr })
             }
         }
