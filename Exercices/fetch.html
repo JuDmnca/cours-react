@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    const URL = `https://jsonplaceholder.typicode.com/users`
+
+    const Users = (props) => {
+        if( props.value === '' )
+            return null
+
+        if ( props.users.length > 0)
+            return (
+                <ul className="list-group list-group-flush">
+                    {props.users.map((user, k) => (
+                        <li className="list-group-item" key={k}>
+                            {user.username}
+                        </li>
+                    ))}
+                </ul>
+            )
+
+        return (
+            <div>
+                <p className="pt-3">No results for this search.</p>
+                <button className="btn btn-primary" onClick={() => {props.setValue('')}}>
+                    Clear search
+                </button>
+            </div>
+        )
+    }
+
+    const Search = () => {
+        const [value, setValue] = React.useState('')
+        const [search, setSearch] = React.useState([])
+
+        React.useEffect(
+            () => {
+                const fetchSearch = async (url, value) => {
+                    const response = await fetch(url)
+                    const data = await response.json()
+                    setSearch(data.filter(user => user.username.includes(value)))
+                }
+
+                if (value)
+                    fetchSearch(URL, value)
+
+            }, [value]
+        )
+
+        return (
+            <div className="search form-group">
+                {value && <p className="alert alert-primary">Searching for : {value}</p>}
+                <input className="form-control" type="text" value={value} onChange={e => setValue(e.target.value)} />
+                <Users users={search} value={value} setValue={setValue}/>
+            </div>
+        )
+    }
+
+    const App = () => {
+        return (
+            <div className='container'>
+                <h1>Search an user</h1>
+                <Search />
+            </div>
+        )
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+    )
+    </script>
+</body>
+</html>
