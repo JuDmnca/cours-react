@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello React</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- babel => compilation du JSX -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+    let interval = null
+
+    const Counter = () => {
+        const [count, setCount] = React.useState(0)
+        const [active, setActive] = React.useState(false)
+
+        React.useEffect(
+            () => {
+                clearInterval(interval)
+                if(active) {
+                    interval = setInterval(() => {
+                        setCount(count + 1)
+                    }, 1000)
+                }
+            }, [count, active]
+        )
+
+        React.useEffect(
+            () => {
+                return () => { clearInterval(interval) }
+            }, []
+        )
+
+        return (
+        <div className="pt-3">
+            <p>Counter : { count }</p>
+            <button className="btn btn-primary" disabled={active} onClick={() => {setCount(count + 1); setActive(true)}}>
+                Start
+            </button>
+            <button className="btn btn-primary" disabled={!active} onClick={() => {setActive(false)}}>
+                Stop
+            </button>
+            {count >= 1 &&
+                <button className="btn btn-primary" disabled={active} onClick={() => {setCount(0)}}>
+                    Reset
+                </button>
+            }
+        </div>
+        )
+    }
+
+    const App = () => {
+        const [life, setLife] = React.useState(false)
+
+        return(
+            <div className="container">
+                <h1>Counter useEffect & useState</h1>
+                <button className="btn btn-primary" onClick={() => setLife(!life)}>
+                    Toggle Counter
+                </button>
+                {life ? <Counter /> : ''}
+            </div>
+        )
+    }
+
+    ReactDOM.render(
+        <App/>,
+        document.getElementById('root')
+    )
+    </script>
+</body>
+</html>
