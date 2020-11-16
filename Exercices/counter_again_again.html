@@ -15,7 +15,7 @@
     <div id="root"></div>
     <script type="text/babel">
 
-    let interval = null
+    let time = null
 
     const Counter = () => {
         const [count, setCount] = React.useState(0)
@@ -23,9 +23,8 @@
 
         React.useEffect(
             () => {
-                clearInterval(interval)
                 if(active) {
-                    interval = setInterval(() => {
+                    time = setTimeout(() => {
                         setCount(count + 1)
                     }, 1000)
                 }
@@ -34,7 +33,7 @@
 
         React.useEffect(
             () => {
-                return () => { clearInterval(interval) }
+                return () => { clearTimeout(time) }
             }, []
         )
 
@@ -44,7 +43,7 @@
             <button className="btn btn-primary" disabled={active} onClick={() => {setCount(count + 1); setActive(true)}}>
                 Start
             </button>
-            <button className="btn btn-primary" disabled={!active} onClick={() => {setActive(false)}}>
+            <button className="btn btn-primary" disabled={!active} onClick={() => {setActive(false); clearTimeout(time)}}>
                 Stop
             </button>
             {count >= 1 &&
