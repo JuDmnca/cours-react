@@ -11,4 +11,20 @@ const Button = styled.button`
   border-radius: .25rem;
 `
 
-export default Button
+const WrapperButtons = styled.section`
+  display: flex;
+  justify-content: center;
+`
+
+const WrapperButton = styled.section`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+export {
+    WrapperButtons,
+    WrapperButton,
+    Button,
+}

@@ -1,26 +1,38 @@
-import styled from 'styled-components'
+import styled, { css, keyframes} from 'styled-components'
+
+const Scale = keyframes`
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.5);
+  }
+`
 
 const WrapperCircles = styled.section`
         display: flex;
         flex-wrap: wrap;
 `
-const WrapperCircle = styled.section`
-        fill: yellow;
-        width: 25vw;
+const Svg = styled.svg`
+        width: calc(100vw / 12);
+        height: 100px;
+`
+const Circle = styled.circle`
+    fill: rgb(77, ${props => props.color ? `${props.color * 255 / 12}` : "0"}, 200);
+    transform-origin: center;
+    animation: ${props => props.animate === true ? css`${Scale} 2s ease alternate infinite` : ''};
 `
 
-function Circle(props) {
+function WrapperCircle(props) {
     return (
-        <WrapperCircle>
-            <svg height="100" width="100" >
-                <circle cx="50" cy="50" r="25" stroke="black"></circle>
-                <text x="50" y="50">{props.id}</text>
-            </svg>
-        </WrapperCircle>
+        <Svg>
+            <Circle cx="50%" cy="50%" r="25" animate={props.animate} color={props.id + 1}></Circle>
+        </Svg>
     )
 }
 
 export {
-    Circle,
+    WrapperCircle,
     WrapperCircles,
 }
