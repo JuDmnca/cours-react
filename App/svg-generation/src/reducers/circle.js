@@ -1,16 +1,12 @@
+import shuffle from 'shuffle-array'
+
 const reducer = (state, action) => {
     switch (action.type) {
         case 'add':
-            console.log(state)
-            return {
-                ...state, id: state.lenght
-            }
+            return  [...state, { id: state.length }]
 
         case 'shuffle':
-
-            return {
-
-            }
+            return shuffle(state)
 
         default:
             return state
