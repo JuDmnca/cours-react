@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 const Button = styled.button`
-  background: #007bff;
+  background: #8FD3DC;
   color: white;
   margin: 1em;
   border: none;
@@ -11,14 +11,22 @@ const Button = styled.button`
   border-radius: .25rem;
   z-index: 1000;
 `
+const AnimButton = styled(Button)`
+  background: #5002D9;
+`;
+
+const ShuffleButton = styled(Button)`
+  background: #5594D0;
+`;
 
 const WrapperButtons = styled.section`
   display: flex;
-  justify-content: center;
-  position: absolute;
+  padding-left: 10vw;
 `
 
 export {
     WrapperButtons,
     Button,
+    ShuffleButton,
+    AnimButton,
 }

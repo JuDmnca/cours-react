@@ -1,51 +1,70 @@
-import { ADD_SPHERE, SHUFFLE, UNSHUFFLE, RESET, START_ANIM, STOP_ANIM } from '../constants/actions'
+import { ADD_SPHERE, SHUFFLE, UNSHUFFLE, RESET, START_ANIM, STOP_ANIM, EASTER_EGG } from '../constants/actions'
 import shuffle from 'shuffle-array'
 
 //Source de vérité
 const stateInit = {
-    circles: []
+    spheres: []
 }
-const MAX = 50
+const MAX = 40
 
 const reducer = (state = stateInit, action = {}) => {
 
     switch(action.type) {
         case ADD_SPHERE:
-            const circle = {
-                color: `rgb(70,(${state.circles.length} * 255 / ${MAX}), 200)` 
+            const g = Math.floor(state.spheres.length * 255 / MAX)
+            const sphere = {
+                color: `rgb(70,${g}, 200)`,
+                number: state.spheres.length.toString(),
+                animate: false,
+                easterEgg: false
            }
 
-            if (state.circles.length <= (MAX-1)) {
+            if (state.spheres.length <= (MAX-1)) {
                 return {
                     ...state,
-                    circles: state.circles.concat(circle)
+                    spheres: state.spheres.concat(sphere)
                 }
             }
 
             return {...state}
 
         case SHUFFLE:
-            let shuffledState = shuffle(state.circles)
+            let shuffledState = shuffle(state.spheres)
             return {
                 ...state,
-                circles: shuffledState
+                spheres: shuffledState
             }
 
         case UNSHUFFLE:
-            let orderState = state.circles.sort((function(a,b){return a.id - b.id}))
+            let orderState = state.spheres.sort((function(a,b){return a.number - b.number}))
             return {
                 ...state,
-                circles: orderState
+                spheres: orderState
             }
 
         case RESET:
-            return {...state, circles: []}
+            return {...state, spheres: []}
 
         case START_ANIM:
-            return state.circles.map((circle) => circle.id % 2 === 0 ? circle : { ...circle, animate: true })
+            return {
+                ...state,
+                spheres: state.spheres.map((sphere) => sphere.number % 2 === 0 ? sphere : { ...sphere, animate: true })
+            }
 
         case STOP_ANIM:
-            return state.circles.map((circle) => circle.id % 2 === 0 ? circle : { ...circle, animate: false })
+            return {
+                ...state,
+                spheres: state.spheres.map((sphere) => sphere.number % 2 === 0 ? sphere : { ...sphere, animate: false })
+            }
+
+        case EASTER_EGG:
+            let spheres = [...state.spheres]
+            spheres[spheres.length - 1] = { ...spheres[spheres.length - 1], easterEgg: true }
+
+            return {
+                ...state,
+                spheres: spheres
+            }
 
         default:
             return state

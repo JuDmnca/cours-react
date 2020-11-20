@@ -41,3 +41,9 @@ export const stop_anim = () => {
         type: STOP_ANIM
     }
 }
+
+export const easter_egg = () => {
+    return {
+      type: EASTER_EGG
+    }
+  }
